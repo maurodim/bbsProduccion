@@ -4,10 +4,15 @@
  */
 package Conversores;
 
+import interfaceGraficas.Inicio;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -39,6 +44,16 @@ public class Numeros {
         fecha=ano+"-"+mes+"-"+dia;
         
         return fecha;
+    }
+    public static Date ConvertirStringEnDate(String ff){
+        SimpleDateFormat fh=new SimpleDateFormat("yyyy-mm-dd");
+        Date fechaVal = null;    
+        try {
+            fechaVal = fh.parse(ff);
+        } catch (ParseException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return fechaVal;
     }
     public static Double ConvertirStringADouble(String num){
         num=num.replace(",",".");

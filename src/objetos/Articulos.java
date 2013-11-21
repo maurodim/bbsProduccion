@@ -14,6 +14,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -258,7 +259,7 @@ public class Articulos implements Facturar,Editables{
         Transaccionable tra=new Conecciones();
         //ArrayList resultado=new ArrayList();
         Articulos articulo=null;
-        String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo,(select colores.descripcion from colores where colores.numero=articulos.codigoColor) as descripcionColor from articulos where INHABILITADO=0";
+        String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo,(select colores.descripcion from colores where colores.numero=articulos.codigoColor) as descripcionColor from articulos where INHABILITADO=0 order by ID desc";
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         try {
             while(rr.next()){
@@ -293,7 +294,7 @@ public class Articulos implements Facturar,Editables{
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo,(select colores.descripcion from colores where colores.numero=articulos.codigoColor) as descripcionColor from articulos where INHABILITADO=0 order by ID";
+        sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo,(select colores.descripcion from colores where colores.numero=articulos.codigoColor) as descripcionColor from articulos where INHABILITADO=0 order by NOMBRE";
         rr=tra.leerConjuntoDeRegistros(sql);
         String desc="";
         try {
@@ -362,7 +363,7 @@ public class Articulos implements Facturar,Editables{
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo,(select colores.descripcion from colores where colores.numero=articulos.codigoColor) as descripcionColor from articulos where INHABILITADO=0 order by ID";
+        sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo,(select colores.descripcion from colores where colores.numero=articulos.codigoColor) as descripcionColor from articulos where INHABILITADO=0 order by NOMBRE";
         rr=tra.leerConjuntoDeRegistros(sql);
         String desc="";
         try {
@@ -427,15 +428,17 @@ public class Articulos implements Facturar,Editables{
     public ArrayList listadoBusqueda(String criterio) {
         ArrayList resultado=new ArrayList();
         Articulos articulo=null;
-        criterio=criterio.toUpperCase();
+        //criterio=criterio.toLowerCase(Locale.FRENCH);
         Enumeration<Articulos> elementos=listadoNom.elements();
         while(elementos.hasMoreElements()){
             articulo=(Articulos)elementos.nextElement();
             int pos=articulo.getDescripcionArticulo().indexOf(criterio);
             System.out.println("hash "+articulo.getDescripcionArticulo()+" "+pos);
-            
+            if(pos==-1){
+                
+            }else{
                 resultado.add(articulo);
-            
+            }
         }
         /*
         Transaccionable tra=new Conecciones();
