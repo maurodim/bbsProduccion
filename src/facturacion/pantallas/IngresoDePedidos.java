@@ -42,6 +42,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
     private static ArrayList listadoDeBusqueda=new ArrayList();
     private static Double montoTotal=0.00;
     private static Comprobantes comp=new Comprobantes();
+    private ArrayList listadoPrecios;
     
     public IngresoDePedidos() {
         //Articulos.CargarMap();
@@ -95,6 +96,8 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setClosable(true);
         setIconifiable(true);
@@ -153,7 +156,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         jCheckBox2.setText("PAGADO");
         jCheckBox2.setEnabled(false);
 
-        ArrayList listadoPrecios=new ArrayList();
+        listadoPrecios=new ArrayList();
         ListasDePrecios lista;
         listadoPrecios=ListasDePrecios.Listado();
         Iterator itL=listadoPrecios.listIterator();
@@ -161,6 +164,11 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
             lista=(ListasDePrecios)itL.next();
             jComboBox1.addItem(lista.getDesccripcion());
         }
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jLabel9.setText("Seleccione forma de Pago");
 
@@ -320,7 +328,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jButton5))
@@ -349,20 +357,30 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(jList1);
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane3.setViewportView(jTextArea1);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(58, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jScrollPane3)
+                        .addContainerGap())))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -444,6 +462,12 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         arti=(Articulos)listadoDeBusqueda.get(posicion);
         System.err.println("ARTICULO SELECCIONADO :"+arti.getDescripcionArticulo()+" "+arti.getCodigoDeBarra());
         String codBar=arti.getCodigoDeBarra();
+        Double precio=arti.getPrecioUnitarioNeto();
+        Double cuotas=0.00;
+        Double total=precio * 1.1;
+        cuotas=precio / 3;
+        String informacion=" Precio Contado o Débito:"+Numeros.ConvertirNumero(precio)+"\n\r Tarjeta de Crédito:"+Numeros.ConvertirNumero(total)+" \n\r 3 Pagos de "+Numeros.ConvertirNumero(cuotas)+"\n\r";
+        this.jTextArea1.setText(informacion);
         jTextField1.setText(codBar.trim());
       
         this.jLabel8.setText(arti.getDescripcionArticulo());
@@ -550,6 +574,9 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         }else{
             comprobante.setPagado(0);
         }
+        ListasDePrecios ls=(ListasDePrecios)listadoPrecios.get(this.jComboBox1.getSelectedIndex());
+        int numero=ls.getId();
+        comprobante.setPagado(numero);
         Facturar fat=new Comprobantes();
         fat.guardar(comprobante);
         /*
@@ -645,6 +672,14 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
     private void jCheckBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCheckBox1ItemStateChanged
        this.jTextField4.requestFocus();
     }//GEN-LAST:event_jCheckBox1ItemStateChanged
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+                ListasDePrecios ls=(ListasDePrecios)listadoPrecios.get(this.jComboBox1.getSelectedIndex());
+        int numero=ls.getId();
+        cliT.setCoeficienteListaDeprecios(ls.getCoeficiente());
+        cliT.setCondicionDePago(ls.getId());
+
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 private void cargarLista(ArrayList lista){
     DefaultListModel modelo=new DefaultListModel();
     Iterator il=lista.listIterator();
@@ -652,7 +687,7 @@ private void cargarLista(ArrayList lista){
     while(il.hasNext()){
         art=(Articulos)il.next();
         System.out.println("DESCRIPCION "+art.getDescripcionArticulo());
-        modelo.addElement(art.getCodigoDeBarra()+" "+art.getDescripcionArticulo()+" talle:"+art.getTalle()+" color:"+art.getColor());
+        modelo.addElement(art.getDescripcionArticulo()+" talle:"+art.getTalle()+" color:"+art.getColor());
     }
     this.jList1.setModel(modelo);
 }
@@ -741,7 +776,9 @@ private void verificar(){
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextArea jTextArea1;
     public static javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField4;

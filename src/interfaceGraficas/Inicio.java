@@ -115,6 +115,7 @@ public class Inicio extends javax.swing.JFrame {
         jMenuItem13 = new javax.swing.JMenuItem();
         jMenuItem18 = new javax.swing.JMenuItem();
         jMenuItem19 = new javax.swing.JMenuItem();
+        jMenuItem21 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -230,6 +231,14 @@ public class Inicio extends javax.swing.JFrame {
 
         jMenuItem19.setText("Administracion Stock Por Deposito");
         jMenu2.add(jMenuItem19);
+
+        jMenuItem21.setText("Generador de Articulos");
+        jMenuItem21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem21ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem21);
 
         jMenuBar1.add(jMenu2);
 
@@ -514,6 +523,13 @@ public class Inicio extends javax.swing.JFrame {
         clie.toFront();
     }//GEN-LAST:event_jMenuItem20ActionPerformed
 
+    private void jMenuItem21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem21ActionPerformed
+       GeneradorDeArticulos gen=new GeneradorDeArticulos();
+       jDesktopPane1.add(gen);
+       gen.setVisible(true);
+       gen.toFront();
+    }//GEN-LAST:event_jMenuItem21ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -592,6 +608,7 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem19;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem20;
+    private javax.swing.JMenuItem jMenuItem21;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;

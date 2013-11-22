@@ -9,8 +9,12 @@ import Conversores.Numeros;
 import Sucursales.Cajas;
 import interfaces.Adeudable;
 import interfacesPrograma.Cajeables;
+import interfacesPrograma.Facturar;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javax.swing.DefaultListModel;
+import objetos.Articulos;
+import objetos.Comprobantes;
 import objetos.Operaciones;
 import tablas.MiModeloTablaArticulos;
 
@@ -136,6 +140,11 @@ public class CajaAbm extends javax.swing.JInternalFrame {
         }
         ModificarLabels();
         jTable1.setModel(tablaCaja);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setText("Seleccione Operacion");
@@ -269,7 +278,7 @@ public class CajaAbm extends javax.swing.JInternalFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         jLabel5.setText("Saldo Inicial de Caja:");
@@ -431,6 +440,10 @@ public class CajaAbm extends javax.swing.JInternalFrame {
        }
         AgregarRenglonTabla();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        cargarLista();
+    }//GEN-LAST:event_jTable1MouseClicked
     private void ModificarLabels(){
         this.jLabel6.setText("T. INGRESOS "+totalVentas);
     this.jLabel7.setText("T. EGRESOS "+totalGastos);
@@ -455,6 +468,23 @@ public class CajaAbm extends javax.swing.JInternalFrame {
     }
     private void ListarClientes(){
         
+    }
+    private void cargarLista(){
+    DefaultListModel modelo=new DefaultListModel();
+    //ArrayList lista=new ArrayList();
+    Cajeables cajea=new Cajas();
+   
+    //lista=Cajas.getListadoCajas();
+    int posic=this.jTable1.getSelectedRow();
+    Cajas caaj=new Cajas();
+    caaj=(Cajas)Cajas.getListadoCajas().get(posic);
+    modelo=cajea.LeerComprobante(caaj.getNumeroDeComprobante(),caaj.getTipoDeComprobante(),caaj.getTipoMovimiento());
+    
+    ListadoComprobantes listadoDeArticulos=new ListadoComprobantes();
+    listadoDeArticulos.jList1.setModel(modelo);
+    listadoDeArticulos.setVisible(true);
+    int posicion=listadoDeArticulos.jList1.getSelectedIndex();
+    
     }
     private void OtrosMovimientos(){
         this.jLabel2.setVisible(false);

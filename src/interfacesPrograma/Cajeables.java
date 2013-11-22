@@ -6,6 +6,7 @@ package interfacesPrograma;
 
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.DefaultListModel;
 
 /**
  *
@@ -22,4 +23,5 @@ public interface Cajeables {
     public Boolean VerificarCaja(int numeroDeUsuario,int numeroDeSucursal,String fecha);
     public Object CargarCaja(int numeroDeUsuario, int numeroDeSucursal, String fecha);
     public Object NuevoGasto(Object factura);
+    public DefaultListModel LeerComprobante(Integer idComprobante,Integer tipoComprobante,Integer tipoMovimiento);
 }

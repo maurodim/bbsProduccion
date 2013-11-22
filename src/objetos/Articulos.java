@@ -6,6 +6,7 @@ package objetos;
 
 import interfaces.Editables;
 import interfaces.Transaccionable;
+import interfacesPrograma.Articulable;
 import interfacesPrograma.Facturar;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +23,7 @@ import java.util.logging.Logger;
  *
  * @author mauro
  */
-public class Articulos implements Facturar,Editables{
+public class Articulos implements Facturar,Editables,Articulable{
     private String codigoDeBarra;
     private String codigoAsignado;
     private Integer rubro;
@@ -49,6 +50,15 @@ public class Articulos implements Facturar,Editables{
     private static Hashtable listadoCodigo=new Hashtable();
     private Double diferenciaRemitida;
     private static ArrayList colores=new ArrayList();
+    private static ArrayList talles=new ArrayList();
+
+    public static ArrayList getTalles() {
+        return talles;
+    }
+
+    public static void setTalles(ArrayList talles) {
+        Articulos.talles = talles;
+    }
 
     public static ArrayList getColores() {
         return colores;
@@ -319,6 +329,18 @@ public class Articulos implements Facturar,Editables{
                 listadoNom.put(desc,articulo);
                 //resultado.add(articulo);
             }
+            sql="select * from colores";
+            rr=tra.leerConjuntoDeRegistros(sql);
+            while(rr.next()){
+                String color=rr.getString("descripcion");
+                colores.add(color);
+            }
+            sql="select * from talles";
+            rr=tra.leerConjuntoDeRegistros(sql);
+            while(rr.next()){
+                Integer talle=rr.getInt("numero");
+                talles.add(talle);
+            }
             rr.close();
         } catch (SQLException ex) {
             Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
@@ -555,6 +577,28 @@ public class Articulos implements Facturar,Editables{
         Articulos articulo;
         articulo=(Articulos)listadoCodigo.get(id);
         return articulo;
+    }
+
+    @Override
+    public void GenerarCodigosMasivos(Object objeto, ArrayList talles, ArrayList colores) {
+        Articulos articulo=(Articulos)objeto;
+        int tama=talles.size();
+        String sql="";
+        Transaccionable tra=new Conecciones();
+        for(int i=0;i < tama;i++){
+            int talless=(int) talles.get(i);
+            int b=colores.size();
+            int c=0;
+            for(int bb=0;bb < b;bb++){
+                String col=(String) colores.get(bb);
+                col=col.substring(0, 1);
+                String codigo=articulo.getCodigoAsignado()+talles.get(i)+col;
+                int codigoCol=bb+1;
+                sql="insert into articulos (BARRAS,NOMBRE,PRECIO,PROVEEDOR,RUBRON,talle,codigoColor) values ('"+codigo+"','"+articulo.getDescripcionArticulo()+"',"+articulo.getPrecioUnitarioNeto()+",'"+articulo.getRubro()+"',"+articulo.getRubro()+","+talless+","+codigoCol+")";
+                tra.guardarRegistro(sql);
+                
+            }
+        }
     }
     
     
