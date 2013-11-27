@@ -130,7 +130,7 @@ public class InformeCaja {
  
         a=0;
         fila=hoja1.createRow(a);
-           sql="select *,(select listcli.RAZON_SOCI from listcli where listcli.COD_CLIENT=movimientosarticulos.numeroCliente)as cliente,(select articulos.BARRAS from articulos where articulos.ID=movimientosarticulos.idArticulo)as articulos,(select articulos.NOMBRE from articulos where articulos.ID=movimientosarticulos.idArticulo)as descripcion from movimientosarticulos";// where fecha like '"+Inicio.fechaDia+"%'";
+           sql="select *,(select listcli.RAZON_SOCI from listcli where listcli.COD_CLIENT=movimientosarticulos.numeroCliente)as cliente,(select articulos.BARRAS from articulos where articulos.ID=movimientosarticulos.idArticulo)as articulos,(select articulos.NOMBRE from articulos where articulos.ID=movimientosarticulos.idArticulo)as descripcion from movimientosarticulos where fecha like '"+Inicio.fechaDia+"%'";
            rs=tra.leerConjuntoDeRegistros(sql);
             celda=fila.createCell(1);
             celda.setCellStyle(titulo);
