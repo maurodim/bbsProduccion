@@ -19,7 +19,7 @@ import objetos.Conecciones;
  * @author mauro
  */
 public class ListasDePrecios {
-    private static Hashtable listadoDeListas=new Hashtable();
+    private static ArrayList listadoDeListas=new ArrayList();
     private Integer id;
     private Double coeficiente;
     private String desccripcion;
@@ -71,7 +71,7 @@ public class ListasDePrecios {
                 lista.setDesccripcion(rs.getString("descripcion"));
                 lista.setCoeficiente(rs.getDouble("coeficiente"));
                 numero=lista.getId();
-                listadoDeListas.put(numero,lista);
+                listadoDeListas.add(lista);
                 
             }
             rs.close();
@@ -83,14 +83,7 @@ public class ListasDePrecios {
         
     }
     public static ArrayList Listado(){
-        ArrayList listadoL=new ArrayList();
-        ListasDePrecios lista;
-        Enumeration<ListasDePrecios> elementos=listadoDeListas.elements();
-        while(elementos.hasMoreElements()){
-            lista=(ListasDePrecios)elementos.nextElement();
-            listadoL.add(lista);
-        }
-        return listadoL;
+        return listadoDeListas;
     }
     
 }

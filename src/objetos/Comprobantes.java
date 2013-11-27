@@ -257,7 +257,7 @@ public class Comprobantes implements Facturar{
         while(iComp.hasNext()){
             articulo=(Articulos)iComp.next();
             Double cantidad=articulo.getCantidad() * -1;
-            sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numeroUsuario) values ("+comp.getTipoMovimiento()+","+articulo.getNumeroId()+","+cantidad+","+Inicio.deposito.getNumero()+","+comp.getTipoComprobante()+","+comp.getNumero()+",'"+comp.getCliente().getCodigoCliente()+"','"+comp.getFechaEmision()+"',"+comp.getUsuarioGenerador()+")";
+            sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numeroUsuario,precioDeVenta,precioDeCosto) values ("+comp.getTipoMovimiento()+","+articulo.getNumeroId()+","+cantidad+","+Inicio.deposito.getNumero()+","+comp.getTipoComprobante()+","+comp.getNumero()+",'"+comp.getCliente().getCodigoCliente()+"','"+comp.getFechaEmision()+"',"+comp.getUsuarioGenerador()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getPrecioDeCosto()+")";
             verif=tra.guardarRegistro(sql);
             
         }

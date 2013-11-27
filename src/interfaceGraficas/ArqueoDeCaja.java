@@ -5,9 +5,13 @@
 package interfaceGraficas;
 
 import Conversores.Numeros;
+import Excel.InformeCaja;
 import Sucursales.Cajas;
 import interfacesPrograma.Cajeables;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -383,7 +387,14 @@ public class ArqueoDeCaja extends javax.swing.JInternalFrame {
         diferencia=diferencia - entrega;
         cajas.setSaldoFinal(diferencia);
         //cajas.setTotalVentas(totalB);
+        
         caj.CerrarCaja(cajas);
+        try {
+            // aca genero el excell
+            InformeCaja.Generar();
+        } catch (SQLException ex) {
+            Logger.getLogger(ArqueoDeCaja.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
         System.exit(1);
     }//GEN-LAST:event_jButton1ActionPerformed

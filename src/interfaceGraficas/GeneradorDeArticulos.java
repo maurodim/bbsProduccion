@@ -20,6 +20,7 @@ import objetos.Articulos;
 public class GeneradorDeArticulos extends javax.swing.JInternalFrame {
     private ArrayList tallesMas=new ArrayList();
     private ArrayList coloresMas=new ArrayList();
+    private ArrayList coloresMasD=new ArrayList();
     /**
      * Creates new form GeneradorDeArticulos
      */
@@ -240,7 +241,8 @@ public class GeneradorDeArticulos extends javax.swing.JInternalFrame {
         Integer pos=this.jList4.getSelectedIndex();
         String talM=(String) Articulos.getColores().get(pos);
         
-        coloresMas.add(talM);
+        coloresMas.add(pos);
+        coloresMasD.add(talM);
         AgregarListaColores();
     }//GEN-LAST:event_jList4MouseClicked
 
@@ -268,7 +270,7 @@ public class GeneradorDeArticulos extends javax.swing.JInternalFrame {
     }
     private void AgregarListaColores(){
         DefaultListModel coll=new DefaultListModel();
-       Iterator itC=coloresMas.listIterator();
+       Iterator itC=coloresMasD.listIterator();
        while(itC.hasNext()){
            String tallM=(String)itC.next();
            coll.addElement(tallM);

@@ -271,10 +271,11 @@ public class Articulos implements Facturar,Editables,Articulable{
         Articulos articulo=null;
         String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo,(select colores.descripcion from colores where colores.numero=articulos.codigoColor) as descripcionColor from articulos where INHABILITADO=0 order by ID desc";
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
+        Integer num=0;
         try {
             while(rr.next()){
                 articulo=new Articulos();
-                articulo.setCodigoAsignado(rr.getString("ID"));
+                articulo.setCodigoAsignado(rr.getString("BARRAS"));
                 articulo.setCodigoColor(rr.getInt("codigoColor"));
                 articulo.setColor(rr.getString("descripcionColor"));
                 articulo.setTalle(rr.getInt("talle"));
@@ -290,7 +291,7 @@ public class Articulos implements Facturar,Editables,Articulable{
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 listadoBarr.put(articulo.getCodigoDeBarra(),articulo);
-                listadoCodigo.put(articulo.getCodigoAsignado(),articulo);
+                listadoCodigo.put(articulo.getNumeroId(),articulo);
                 
                 //resultado.add(articulo);
             }
@@ -310,7 +311,7 @@ public class Articulos implements Facturar,Editables,Articulable{
         try {
             while(rr.next()){
                 articulo=new Articulos();
-                articulo.setCodigoAsignado(rr.getString("ID"));
+                articulo.setCodigoAsignado(rr.getString("BARRAS"));
                 articulo.setCodigoColor(rr.getInt("codigoColor"));
                 articulo.setColor(rr.getString("descripcionColor"));
                 articulo.setTalle(rr.getInt("talle"));
@@ -325,15 +326,9 @@ public class Articulos implements Facturar,Editables,Articulable{
                 articulo.setStockActual(rr.getDouble("stock"));
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
-                desc=articulo.getDescripcionArticulo()+" Talle:"+articulo.getTalle()+" Color:"+articulo.getColor();
+                desc=articulo.getDescripcionArticulo().toUpperCase()+" Talle:"+articulo.getTalle()+" Color:"+articulo.getColor();
                 listadoNom.put(desc,articulo);
                 //resultado.add(articulo);
-            }
-            sql="select * from colores";
-            rr=tra.leerConjuntoDeRegistros(sql);
-            while(rr.next()){
-                String color=rr.getString("descripcion");
-                colores.add(color);
             }
             sql="select * from talles";
             rr=tra.leerConjuntoDeRegistros(sql);
@@ -362,7 +357,7 @@ public class Articulos implements Facturar,Editables,Articulable{
              listadoCodigo.clear();
             while(rr.next()){
                 articulo=new Articulos();
-                articulo.setCodigoAsignado(rr.getString("ID"));
+                articulo.setCodigoAsignado(rr.getString("BARRAS"));
                 articulo.setCodigoColor(rr.getInt("codigoColor"));
                 articulo.setColor(rr.getString("descripcionColor"));
                 articulo.setTalle(rr.getInt("talle"));
@@ -378,7 +373,7 @@ public class Articulos implements Facturar,Editables,Articulable{
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
                 listadoBarr.put(articulo.getCodigoDeBarra(),articulo);
-               listadoCodigo.put(articulo.getCodigoAsignado(),articulo);
+               listadoCodigo.put(articulo.getNumeroId(),articulo);
                 //resultado.add(articulo);
             }
                   } catch (SQLException ex) {
@@ -391,7 +386,7 @@ public class Articulos implements Facturar,Editables,Articulable{
         try {
             while(rr.next()){
                 articulo=new Articulos();
-                articulo.setCodigoAsignado(rr.getString("ID"));
+                articulo.setCodigoAsignado(rr.getString("BARRAS"));
                 articulo.setCodigoColor(rr.getInt("codigoColor"));
                 articulo.setColor(rr.getString("descripcionColor"));
                 articulo.setTalle(rr.getInt("talle"));
@@ -406,7 +401,7 @@ public class Articulos implements Facturar,Editables,Articulable{
                 articulo.setStockActual(rr.getDouble("stock"));
                 articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
                 articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
-                desc=articulo.getDescripcionArticulo()+" Talle:"+articulo.getTalle()+" Color:"+articulo.getColor();
+                desc=articulo.getDescripcionArticulo().toUpperCase()+" Talle:"+articulo.getTalle()+" Color:"+articulo.getColor();
                 listadoNom.put(desc,articulo);
                 //resultado.add(articulo);
             }
@@ -450,11 +445,11 @@ public class Articulos implements Facturar,Editables,Articulable{
     public ArrayList listadoBusqueda(String criterio) {
         ArrayList resultado=new ArrayList();
         Articulos articulo=null;
-        //criterio=criterio.toLowerCase(Locale.FRENCH);
+        criterio=criterio.toUpperCase();
         Enumeration<Articulos> elementos=listadoNom.elements();
         while(elementos.hasMoreElements()){
             articulo=(Articulos)elementos.nextElement();
-            int pos=articulo.getDescripcionArticulo().indexOf(criterio);
+            int pos=articulo.getDescripcionArticulo().toUpperCase().indexOf(criterio);
             System.out.println("hash "+articulo.getDescripcionArticulo()+" "+pos);
             if(pos==-1){
                 
@@ -590,13 +585,14 @@ public class Articulos implements Facturar,Editables,Articulable{
             int b=colores.size();
             int c=0;
             for(int bb=0;bb < b;bb++){
-                String col=(String) colores.get(bb);
-                col=col.substring(0, 1);
+                Integer col=(Integer) colores.get(bb);
+                col++;
+                //col=col.substring(0, 1);
                 String codigo=articulo.getCodigoAsignado()+talles.get(i)+col;
-                int codigoCol=bb+1;
-                sql="insert into articulos (BARRAS,NOMBRE,PRECIO,PROVEEDOR,RUBRON,talle,codigoColor) values ('"+codigo+"','"+articulo.getDescripcionArticulo()+"',"+articulo.getPrecioUnitarioNeto()+",'"+articulo.getRubro()+"',"+articulo.getRubro()+","+talless+","+codigoCol+")";
+                //int codigoCol=bb+1;
+                sql="insert into articulos (BARRAS,NOMBRE,PRECIO,PROVEEDOR,RUBRON,talle,codigoColor) values ('"+codigo+"','"+articulo.getDescripcionArticulo()+"',"+articulo.getPrecioUnitarioNeto()+",'"+articulo.getRubro()+"',"+articulo.getRubro()+","+talless+","+col+")";
                 tra.guardarRegistro(sql);
-                
+                //System.out.println(sql);
             }
         }
     }

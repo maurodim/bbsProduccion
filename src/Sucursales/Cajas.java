@@ -45,11 +45,20 @@ public class Cajas extends Sucursales implements Cajeables{
     private Boolean reandida;
     private Boolean estado;
     private Integer tipo;
+    private String formaDePago;
     private static ArrayList listBilletes=new ArrayList();
     private static ArrayList listadoOperaciones=new ArrayList();
     private static ArrayList listOperaciones=new ArrayList();
     private static ArrayList listadoCajas=new ArrayList();
     private String descripcionMovimiento;
+
+    public String getFormaDePago() {
+        return formaDePago;
+    }
+
+    public void setFormaDePago(String formaDePago) {
+        this.formaDePago = formaDePago;
+    }
 
     public Integer getTipo() {
         return tipo;
@@ -431,7 +440,7 @@ public class Cajas extends Sucursales implements Cajeables{
         Cajas cajas=(Cajas)caja;
         Cajas cajass=null;
         Double saldoFinal=cajas.saldoInicial;
-        String sql="select * from movimientoscaja where idCaja="+cajas.numero;
+        String sql="select *,(select coeficienteslistas.descripcion from coeficienteslistas where coeficienteslistas.id = movimientoscaja.pagado)as forma from movimientoscaja where idCaja="+cajas.numero;
         Transaccionable tra=new Conecciones();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
         try {
@@ -442,6 +451,8 @@ public class Cajas extends Sucursales implements Cajeables{
                 cajass.setTipoMovimiento(rs.getInt("tipoMovimiento"));
                 cajass.setMontoMovimiento(rs.getDouble("monto"));
                 saldoFinal= saldoFinal + rs.getDouble("monto");
+                cajass.setTipo(rs.getInt("pagado"));
+                cajass.setFormaDePago(rs.getString("forma"));
                 cajass.setTipoDeComprobante(rs.getInt("tipoComprobante"));
                 int pos=cajass.getTipoMovimiento() -1;
                 Operaciones operacion=(Operaciones)listOperaciones.get(pos);
@@ -527,7 +538,7 @@ public class Cajas extends Sucursales implements Cajeables{
         switch (tipoMovimiento){
            case 1:
                //ventas -- leo en articulos para sacar el detalle, devuelvo un objeto comprobantes
-               sql="select *,(select movimientoscaja.monto from movimientoscaja where movimientoscaja.tipoComprobante="+tipoComprobante+" and movimientoscaja.numeroComprobante="+idComprobante+" and movimientoscaja.numeroUsuario="+Inicio.usuario.getNumeroId()+" and movimientoscaja.tipoMovimiento=1)as total from movimientosarticulos where tipoComprobante="+tipoComprobante+" and numeroComprobante="+idComprobante+" and numerousuario="+Inicio.usuario.getNumeroId()+" and tipoMovimiento=1";
+               sql="select *,(select movimientoscaja.monto from movimientoscaja where movimientoscaja.tipoComprobante="+tipoComprobante+" and movimientoscaja.numeroComprobante="+idComprobante+" and movimientoscaja.numeroUsuario="+Inicio.usuario.getNumeroId()+" and movimientoscaja.tipoMovimiento=1)as total,(select movimientoscaja.pagado from movimientoscaja where movimientoscaja.tipoComprobante="+tipoComprobante+" and movimientoscaja.numeroComprobante="+idComprobante+" and movimientoscaja.numeroUsuario="+Inicio.usuario.getNumeroId()+" and movimientoscaja.tipoMovimiento=1)as formas from movimientosarticulos where tipoComprobante="+tipoComprobante+" and numeroComprobante="+idComprobante+" and numerousuario="+Inicio.usuario.getNumeroId()+" and tipoMovimiento=1";
                System.out.println(sql);
                rs=tra.leerConjuntoDeRegistros(sql);
                Comprobantes comprobante=new Comprobantes();
@@ -546,17 +557,18 @@ public class Cajas extends Sucursales implements Cajeables{
                 comprobante.setCliente(cliente);
                 comprobante.setFechaEmision(rs.getDate("fecha"));
                 reg++;
-                articulo=(Articulos) fact.cargarPorCodigoAsignado(rs.getInt("idArticulo"));
+                Integer id=rs.getInt("idArticulo"); 
+                articulo=(Articulos) fact.cargarPorCodigoAsignado(id);
                 cant=rs.getDouble("cantidad");
                 cant=cant * -1;
                 articulo.setPrecioUnitario(rs.getDouble("precioDeVenta"));
-                articulo.setPrecioServicio(rs.getDouble("precioServicio"));
+                //articulo.setPrecioServicio(rs.getDouble("precioServicio"));
                 total=rs.getDouble("total");
                 //articulo.setCantidad(cant);
                 //articulo.setPrecioUnitario(rs.getDouble("precioDeVenta"));
                 //articulo.setPrecioServicio(rs.getDouble("precioServicio"));
                 if(reg==1){
-                renglon="Cliente :"+cliente.getRazonSocial()+" Fecha:"+comprobante.getFechaEmision()+"";
+                renglon="Cliente :"+cliente.getRazonSocial()+" Fecha:"+comprobante.getFechaEmision()+" ";
                 modelo.addElement(renglon);
                 }
                 renglon="Articulo :"+articulo.getCodigoAsignado()+" descripcion:"+articulo.getDescripcionArticulo()+" cantidad:"+cant+" precio:"+articulo.getPrecioUnitario();

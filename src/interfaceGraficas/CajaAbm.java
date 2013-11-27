@@ -26,6 +26,8 @@ public class CajaAbm extends javax.swing.JInternalFrame {
     private static Double totalVentas;
     private static Double totalGastos;
     private static Double totalEfect;
+    private static Double efect;
+    private static Double tarj;
     private ArrayList listadoP;
     private Integer operacionSelect=0;
     /**
@@ -37,6 +39,7 @@ public class CajaAbm extends javax.swing.JInternalFrame {
         
         initComponents();
         this.jLabel5.setText("Saldo Inicial de Caja:"+Inicio.caja.getSaldoInicial());
+        ModificarLabels();
         
     }
     private void AgregarRenglonTabla(){
@@ -115,6 +118,8 @@ public class CajaAbm extends javax.swing.JInternalFrame {
         totalVentas=0.00;
         totalGastos=0.00;
         totalEfect=0.00;
+        efect=0.00;
+        tarj=0.00;
         Cajas cajj=new Cajas();
         tablaCaja.addColumn("COMPROBANTE");
         tablaCaja.addColumn("MOVIMIENTO");
@@ -126,6 +131,14 @@ public class CajaAbm extends javax.swing.JInternalFrame {
             fila[1]=cajj.getDescripcionMovimiento();
             if(cajj.getTipoMovimiento()==1 || cajj.getTipoMovimiento()==7 || cajj.getTipoMovimiento()==13){
                 totalVentas=totalVentas + cajj.getMontoMovimiento();
+                switch (cajj.getTipo()){
+                    case 1:
+                    efect=efect + cajj.getMontoMovimiento();
+                    break;
+                    default:
+                    tarj=tarj + cajj.getMontoMovimiento();
+                    break;
+                }
             }else{
                 if(cajj.getTipoMovimiento()==9){
 
@@ -134,7 +147,7 @@ public class CajaAbm extends javax.swing.JInternalFrame {
                     totalGastos=totalGastos + cajj.getMontoMovimiento();
                 }
             }
-
+            totalEfect=efect;
             fila[2]=cajj.getMontoMovimiento();
             tablaCaja.addRow(fila);
         }
@@ -278,7 +291,7 @@ public class CajaAbm extends javax.swing.JInternalFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         jLabel5.setText("Saldo Inicial de Caja:");
@@ -308,7 +321,7 @@ public class CajaAbm extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel6)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7)
                 .addGap(18, 18, 18)
@@ -445,9 +458,10 @@ public class CajaAbm extends javax.swing.JInternalFrame {
         cargarLista();
     }//GEN-LAST:event_jTable1MouseClicked
     private void ModificarLabels(){
-        this.jLabel6.setText("T. INGRESOS "+totalVentas);
+        
+        this.jLabel6.setText("T. INGRESOS "+totalVentas+"\n\r EFECTIVO :"+efect+" TARJETAS:"+tarj);
     this.jLabel7.setText("T. EGRESOS "+totalGastos);
-    totalEfect=Inicio.caja.getSaldoInicial()+totalVentas + totalGastos;
+    totalEfect=Inicio.caja.getSaldoInicial()+efect + totalGastos;
     this.jLabel8.setText("T. EFECT EN CAJA "+totalEfect);
     }
     private void ListarProveedores(){
