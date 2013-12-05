@@ -27,7 +27,8 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         this.jTextField4.setText(String.valueOf(arti.getPrecioDeCosto()));
         this.jTextField5.setText(String.valueOf(arti.getPrecioUnitarioNeto()));
         this.jTextField7.setText(String.valueOf(arti.getCodigoDeBarra()));
-        this.jTextField6.setText(String.valueOf(arti.getPrecioServicio()));
+        this.jTextField6.setText(String.valueOf(arti.getTalle()));
+        this.jComboBox1.setVisible(false);
         this.jTextField7.selectAll();
         this.jTextField7.requestFocus();
         accion=2;
@@ -210,12 +211,13 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         arti.setPrecioUnitarioNeto(cant);
         Integer cantid=Integer.parseInt(this.jTextField6.getText());
         arti.setTalle(cantid);
-        arti.setCodigoColor(posicionColor);
+        //arti.setCodigoColor(posicionColor);
         arti.setModificaPrecio(false);
         Editables edit=new Articulos();
         if(accion==2){
             edit.ModificaionObjeto(arti);
         }else{
+            arti.setCodigoColor(posicionColor);
             edit.AltaObjeto(arti);
         }
         this.dispose();

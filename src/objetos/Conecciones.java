@@ -6,6 +6,7 @@ package objetos;
 
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import interfaceGraficas.Inicio;
 import interfaces.Transaccionable;
 import java.io.File;
 import java.io.FileWriter;
@@ -67,9 +68,9 @@ public class Conecciones implements Transaccionable{
             FileWriter fichero=null;
             PrintWriter pw=null;
             try {
-                fichero = new FileWriter("C:\\Gestion\\erroresDeConeccion.txt",true);
+                fichero = new FileWriter("C:\\Gestion\\"+Inicio.fechaDia+" - erroresDeConeccion.txt",true);
                 pw=new PrintWriter(fichero);
-                pw.println(sql);
+                pw.println(sql+"\n");
             } catch (IOException ex1) {
                 Logger.getLogger(Conecciones.class.getName()).log(Level.SEVERE, null, ex1);
             }finally{

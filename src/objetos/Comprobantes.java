@@ -39,9 +39,28 @@ public class Comprobantes implements Facturar{
     private Double montoIva;
     private Double montoRet;
     private Integer pagado;
+    private Double montoPagoParcial;
+    private Integer tipoPagoParcial;
     private static Integer numeroComprobante;
     private static Integer idComp;
 
+    public Double getMontoPagoParcial() {
+        return montoPagoParcial;
+    }
+
+    public void setMontoPagoParcial(Double montoPagoParcial) {
+        this.montoPagoParcial = montoPagoParcial;
+    }
+
+    public Integer getTipoPagoParcial() {
+        return tipoPagoParcial;
+    }
+
+    public void setTipoPagoParcial(Integer tipoPagoParcial) {
+        this.tipoPagoParcial = tipoPagoParcial;
+    }
+
+    
     public Integer getPagado() {
         return pagado;
     }
@@ -166,7 +185,7 @@ public class Comprobantes implements Facturar{
         this.tipoComprobante=0;
         this.tipoMovimiento=0;
         this.usuarioGenerador=0;
-
+        this.montoPagoParcial=0.00;
         this.numero = numero;
 
     }
@@ -179,6 +198,7 @@ public class Comprobantes implements Facturar{
         this.tipoComprobante=0;
         this.tipoMovimiento=0;
         this.usuarioGenerador=0;
+        this.montoPagoParcial=0.00;
     }
 
     public int getNumero() {
@@ -261,12 +281,17 @@ public class Comprobantes implements Facturar{
             verif=tra.guardarRegistro(sql);
             
         }
-        if(verif){
+        if(comp.getMontoPagoParcial() > 0){
+            sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado) values ("+comp.getUsuarioGenerador()+","+comp.getIdSucursal()+","+comp.getNumero()+","+comp.getTipoComprobante()+","+comp.getMontoPagoParcial()+","+comp.getTipoMovimiento()+","+comp.getIdCaja()+","+comp.getCliente().getCodigoId()+",1,1)";
+            tra.guardarRegistro(sql);
+            sql="insert into movimientosclientes (numeroProveedor,monto,pagado,numeroComprobante,idUsuario,idCaja,idSucursal,tipoComprobante) value ("+comp.getCliente().getCodigoId()+","+comp.getMontoPagoParcial()+",1,"+numeroComprobante+","+Inicio.usuario.getNumeroId()+","+Inicio.caja.getNumero()+","+Inicio.sucursal.getNumero()+","+comp.getTipoComprobante()+")";
+            tra.guardarRegistro(sql);
+        }
             sql="insert into movimientoscaja (numeroUsuario,numeroSucursal,numeroComprobante,tipoComprobante,monto,tipoMovimiento,idCaja,idCliente,tipoCliente,pagado) values ("+comp.getUsuarioGenerador()+","+comp.getIdSucursal()+","+comp.getNumero()+","+comp.getTipoComprobante()+","+comp.getMontoTotal()+","+comp.getTipoMovimiento()+","+comp.getIdCaja()+","+comp.getCliente().getCodigoId()+",1,"+comp.getPagado()+")";
             tra.guardarRegistro(sql);
             sql="insert into movimientosclientes (numeroProveedor,monto,pagado,numeroComprobante,idUsuario,idCaja,idSucursal,tipoComprobante) value ("+comp.getCliente().getCodigoId()+","+comp.getMontoTotal()+","+comp.getPagado()+","+numeroComprobante+","+Inicio.usuario.getNumeroId()+","+Inicio.caja.getNumero()+","+Inicio.sucursal.getNumero()+","+comp.getTipoComprobante()+")";
             tra.guardarRegistro(sql);
-        }
+        
         System.out.println("SE RECEPCIONO BARBARO");
         sql="update tipocomprobantes set numeroActivo="+numeroComprobante+" where numero="+idComp;
         tra.guardarRegistro(sql);

@@ -52,8 +52,17 @@ public class ClientesTango implements Busquedas,Facturar{
         private Integer codigoId;
         private Double cupoDeCredito;
         private Double saldoActual;
+        private String face;
         private static Hashtable listadoClientes=new Hashtable();
         private static Hashtable listadoPorNom=new Hashtable();
+
+    public String getFace() {
+        return face;
+    }
+
+    public void setFace(String face) {
+        this.face = face;
+    }
         
         
         
@@ -461,7 +470,7 @@ public class ClientesTango implements Busquedas,Facturar{
         ClientesTango cli=(ClientesTango)cliente;
         Boolean resultado=false;
         Transaccionable tra=new Conecciones();
-        String sql="insert into listcli (COD_CLIENT,RAZON_SOCI,DOMICILIO,LOCALIDAD,TELEFONO_1,TIPO_IVA,IDENTIFTRI,COND_VTA,NRO_LISTA,empresa) values ('"+cli.getCodigoCliente()+"','"+cli.getRazonSocial()+"','"+cli.getDireccion()+"','SANTA FE','"+cli.getTelefono()+"',"+cli.getCondicionIva()+",'"+cli.getNumeroDeCuit()+"',1,1,'"+cli.getEmpresa()+"')";
+        String sql="insert into listcli (COD_CLIENT,RAZON_SOCI,DOMICILIO,LOCALIDAD,TELEFONO_1,TIPO_IVA,IDENTIFTRI,COND_VTA,NRO_LISTA,empresa,face) values ('"+cli.getCodigoCliente()+"','"+cli.getRazonSocial()+"','"+cli.getDireccion()+"','SANTA FE','"+cli.getTelefono()+"','"+cli.getCondicionIva()+"','"+cli.getNumeroDeCuit()+"',1,1,'"+cli.getEmpresa()+"','"+cli.getFace()+"')";
         resultado=tra.guardarRegistro(sql);
         return resultado;
     }

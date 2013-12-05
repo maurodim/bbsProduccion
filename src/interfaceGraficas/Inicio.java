@@ -186,7 +186,7 @@ public class Inicio extends javax.swing.JFrame {
         jMenu1.add(jMenuItem11);
 
         jMenuItem14.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK));
-        jMenuItem14.setText("Cajas");
+        jMenuItem14.setText("Informes");
         jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem14ActionPerformed(evt);
@@ -446,7 +446,7 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_formComponentShown
 
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
-        CajaAbm cajA=new CajaAbm();
+        EmisorDeInformes cajA=new EmisorDeInformes();
         jDesktopPane1.add(cajA);
         cajA.setVisible(true);
         cajA.toFront();

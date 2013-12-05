@@ -27,6 +27,7 @@ public class BbsProduccion {
         usuariosList=usuarios.listarUsuario();
         */
         File folder=new File("C:\\Gestion");
+        File info=new File ("C:\\Informes");
         File archivo=null;
         FileReader fr=null;
         BufferedReader br=null;
@@ -36,6 +37,13 @@ public class BbsProduccion {
             folder.mkdirs();
         }else{
             System.out.println("NOOOOOOOOOOOOOOO EXISTE EL DIRECTORIO");
+            
+        }
+        if(!info.isDirectory()){
+            System.out.println("EXISTE EL DIRECTORIO");
+            info.mkdirs();
+        }else{
+            System.out.println("YA EXISTE EL DIRECTORIO INFORMES");
             
         }
         try {
