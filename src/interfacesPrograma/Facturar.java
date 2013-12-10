@@ -24,5 +24,8 @@ public interface Facturar {
     public Object cargarPorCodigoDeBarra(String codigoDeBarra);
     public Integer leerNumeroDeComprobanteSiguiente(Integer numeroComprobante);
     public Object cargarPorCodigoAsignado(Integer id);
-    
+    public Boolean guardarSena(Object oob);
+    public Double leerSena(Object oob);
+    public Boolean modificarSena(Object oob);
+    public Boolean aplicarSena(Object oob);
 }

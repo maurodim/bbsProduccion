@@ -55,7 +55,17 @@ public class ClientesTango implements Busquedas,Facturar{
         private String face;
         private static Hashtable listadoClientes=new Hashtable();
         private static Hashtable listadoPorNom=new Hashtable();
+        private static Hashtable listadoPorNumero=new Hashtable();
+        private Double seña;
 
+    public Double getSeña() {
+        return seña;
+    }
+
+    public void setSeña(Double seña) {
+        this.seña = seña;
+    }
+        
     public String getFace() {
         return face;
     }
@@ -63,9 +73,6 @@ public class ClientesTango implements Busquedas,Facturar{
     public void setFace(String face) {
         this.face = face;
     }
-        
-        
-        
 
     public Double getCupoDeCredito() {
         return cupoDeCredito;
@@ -95,7 +102,7 @@ public class ClientesTango implements Busquedas,Facturar{
               
             
             Transaccionable tra=new Conecciones();
-            String sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto) from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo from listcli";
+            String sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto) from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo,(select sum(movimientossena.monto) from movimientossena where movimientossena.codigoCliente=listcli.codMMd and movimientossena.aplicado=0)as seña from listcli";
             System.out.println("CLIENTES "+sql);
             //String sql="select pedidos_carga1.COD_CLIENT,pedidos_carga1.RAZON_SOC,pedidos_carga1.NRO_PEDIDO,pedidos_carga1.numero,pedidos_carga1.LEYENDA_2 from pedidos_carga1 where RAZON_SOC like '"+cliente+"%' group by COD_CLIENT order by RAZON_SOC";
             ResultSet rs=tra.leerConjuntoDeRegistros(sql);
@@ -124,13 +131,16 @@ public class ClientesTango implements Busquedas,Facturar{
                 cli.setCupoDeCredito(rs.getDouble("CUPO_CREDI"));
                 cli.setSaldo(rs.getDouble("saldo"));
                 cli.setSaldoActual(rs.getDouble("saldo"));
+                cli.setSeña(rs.getDouble("seña"));
                 //cli.setNumeroPedido(rs.getString(3));
                 //cli.setObservaciones(rs.getString(5));
                 System.out.println("CLIENTE "+cli.getRazonSocial() +"COMENTARIO "+cli.getCodigoCliente());
                 codigo=cli.getCodigoCliente();
                 nombre=cli.getRazonSocial();
+                Integer numCod=cli.getCodigoId();
                 listadoClientes.put(codigo,cli);
                 listadoPorNom.put(nombre,cli);
+                listadoPorNumero.put(numCod, cli);
             }
             rs.close();
         } catch (SQLException ex) {
@@ -165,7 +175,32 @@ public class ClientesTango implements Busquedas,Facturar{
                     //ped.add(cli);
             
     }
-
+    public ClientesTango(Integer codigo){
+        ClientesTango clientesTango=(ClientesTango)listadoPorNumero.get(codigo);
+                    
+                    this.codigoId=clientesTango.getCodigoId();
+                    this.codigoCliente=clientesTango.getCodigoCliente();
+                    this.razonSocial=clientesTango.getRazonSocial();
+                    this.direccion=clientesTango.getDireccion();
+                    this.condicionDeVenta=clientesTango.getCondicionDeVenta();
+                    this.listaDePrecios=clientesTango.getListaDePrecios();
+                    Double descuent=clientesTango.getDescuento();                
+                    this.descuento=descuent;
+                    this.numeroDeCuit=clientesTango.getNumeroDeCuit();
+                    this.empresa=clientesTango.getEmpresa();
+                    this.condicionIva=clientesTango.getCondicionIva();
+                    this.telefono=clientesTango.getTelefono();
+                    this.localidad=clientesTango.getLocalidad();
+                    this.coeficienteListaDeprecios=clientesTango.getCoeficienteListaDeprecios();
+                    this.cupoDeCredito=clientesTango.getCupoDeCredito();
+                    this.saldoActual=clientesTango.getSaldoActual();
+                    this.saldo=clientesTango.getSaldo();
+                    //cli.setNumeroPedido(rs.getString(3));
+                    //cli.setObservaciones(rs.getString(5));
+                    //System.out.println("CLIENTE "+cli.getRazonSocial() +"COMENTARIO "+cli.getCodigoCliente());
+                    //ped.add(cli);
+            
+    }
     public ClientesTango() {
     }
     
@@ -365,7 +400,7 @@ public class ClientesTango implements Busquedas,Facturar{
         Transaccionable tra=new Conecciones();
         String sql="insert into listcli (COD_CLIENT,RAZON_SOCI,DOMICILIO,LOCALIDAD,TELEFONO_1,TIPO_IVA,IDENTIFTRI,COND_VTA,NRO_LISTA,empresa) values ('"+cli.getCodigoCliente()+"','"+cli.getRazonSocial()+"','"+cli.getDireccion()+"','SANTA FE','"+cli.getTelefono()+"',"+cli.getCondicionIva()+",'"+cli.getNumeroDeCuit()+"',1,1,'"+cli.getEmpresa()+"')";
         if(tra.guardarRegistro(sql)){
-            
+           cargarMap(); 
         }else{
             
         }
@@ -469,9 +504,13 @@ public class ClientesTango implements Busquedas,Facturar{
     public Boolean guardarNuevoCliente(Object cliente) {
         ClientesTango cli=(ClientesTango)cliente;
         Boolean resultado=false;
+        String codig=cli.getRazonSocial().substring(0,5);
+        System.err.println("codigo nuevo :"+codig);
+        cli.setCodigoCliente(codig);
         Transaccionable tra=new Conecciones();
-        String sql="insert into listcli (COD_CLIENT,RAZON_SOCI,DOMICILIO,LOCALIDAD,TELEFONO_1,TIPO_IVA,IDENTIFTRI,COND_VTA,NRO_LISTA,empresa,face) values ('"+cli.getCodigoCliente()+"','"+cli.getRazonSocial()+"','"+cli.getDireccion()+"','SANTA FE','"+cli.getTelefono()+"','"+cli.getCondicionIva()+"','"+cli.getNumeroDeCuit()+"',1,1,'"+cli.getEmpresa()+"','"+cli.getFace()+"')";
+        String sql="insert into listcli (COD_CLIENT,RAZON_SOCI,DOMICILIO,LOCALIDAD,TELEFONO_1,TIPO_IVA,IDENTIFTRI,COND_VTA,NRO_LISTA,empresa,face) values ('"+codig+"','"+cli.getRazonSocial()+"','"+cli.getDireccion()+"','SANTA FE','"+cli.getTelefono()+"','"+cli.getCondicionIva()+"','"+cli.getNumeroDeCuit()+"',1,1,'"+cli.getEmpresa()+"','"+cli.getFace()+"')";
         resultado=tra.guardarRegistro(sql);
+        if(resultado)cargarMap();
         return resultado;
     }
 
@@ -484,6 +523,7 @@ public class ClientesTango implements Busquedas,Facturar{
         //String sql="insert into listcli (COD_CLIENT,RAZON_SOCI,DOMICILIO,LOCALIDAD,TELEFONO_1,TIPO_IVA,IDENTIFTRI,COND_VTA,NRO_LISTA,empresa) values ('"+cli.getCodigoCliente()+"','"+cli.getRazonSocial()+"','"+cli.getDireccion()+"','SANTA FE','"+cli.getTelefono()+"',"+cli.getCondicionIva()+",'"+cli.getNumeroDeCuit()+"',1,1,'"+cli.getEmpresa()+"')";
         String sql="update listcli set RAZON_SOCI='"+cli.getRazonSocial()+"',DOMICILIO='"+cli.getDireccion()+"',TELEFONO_1='"+cli.getTelefono()+"',COND_VTA="+cli.getCondicionDeVenta()+",NRO_LISTA="+cli.getListaDePrecios()+",CUPO_CREDI="+cli.getCupoDeCredito()+" where codMMd ="+cli.getCodigoId();
         resultado=tra.guardarRegistro(sql);
+        if(resultado)cargarMap();
         return resultado;
     }
 
@@ -524,6 +564,26 @@ public class ClientesTango implements Busquedas,Facturar{
 
     @Override
     public Object cargarPorCodigoAsignado(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean guardarSena(Object oob) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Double leerSena(Object oob) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean modificarSena(Object oob) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean aplicarSena(Object oob) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
         

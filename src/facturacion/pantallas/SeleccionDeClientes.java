@@ -4,14 +4,17 @@
  */
 package facturacion.pantallas;
 
+import Conversores.Numeros;
 import facturacion.clientes.ClientesTango;
 import interfaceGraficas.Inicio;
 import interfacesPrograma.Busquedas;
+import interfacesPrograma.Facturar;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
+import objetos.Comprobantes;
 import tablas.MiModeloTablaBuscarCliente;
 
 /**
@@ -62,6 +65,9 @@ public class SeleccionDeClientes extends javax.swing.JInternalFrame {
         jButton3 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setClosable(true);
         setIconifiable(true);
@@ -165,6 +171,10 @@ public class SeleccionDeClientes extends javax.swing.JInternalFrame {
 
         jTextField4.setEnabled(false);
 
+        jLabel5.setText("Seña :");
+
+        jCheckBox1.setText("Aplica Seña?");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -181,7 +191,14 @@ public class SeleccionDeClientes extends javax.swing.JInternalFrame {
                     .addComponent(jTextField3)
                     .addComponent(jTextField4))
                 .addGap(18, 18, 18)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -191,7 +208,9 @@ public class SeleccionDeClientes extends javax.swing.JInternalFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
+                    .addComponent(jLabel5)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBox1))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -199,7 +218,8 @@ public class SeleccionDeClientes extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -226,7 +246,7 @@ public class SeleccionDeClientes extends javax.swing.JInternalFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
@@ -269,6 +289,13 @@ public class SeleccionDeClientes extends javax.swing.JInternalFrame {
        this.jTextField2.setText(String.valueOf(cliT.getListaDePrecios()));
        this.jTextField4.setText(String.valueOf(cliT.getCondicionDeVenta()));
        this.jTextField3.setText(String.valueOf(cliT.getDescuento()));
+       this.jTextField5.setText(String.valueOf(cliT.getSeña()));
+       if(cliT.getSeña() > 0){
+           this.jCheckBox1.setVisible(true);
+           this.jCheckBox1.setSelected(true);
+       }else{
+           this.jCheckBox1.setVisible(false);
+       }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -281,6 +308,17 @@ public class SeleccionDeClientes extends javax.swing.JInternalFrame {
         cliT.setCondicionDeVenta(condicionVta);
         cliT.setListaDePrecios(listaDePrecio);
         System.out.println(" DESCUENTO PANTALLA CLIENTE"+desc);
+        Comprobantes compp=new Comprobantes();
+        compp.setCliente(cliT);
+        Facturar fat=new Comprobantes();
+        if(this.jCheckBox1.isSelected()){
+            
+            fat.aplicarSena(compp);
+        }else{
+            
+        compp.setMontoTotal(Numeros.ConvertirStringADouble(String.valueOf(this.jTextField5.getText())));
+        fat.modificarSena(compp);
+        }
         IngresoDePedidos.cliT=cliT;
         IngresoDePedidos.jLabel6.setText(cliT.getRazonSocial());
         IngresoDePedidos.jTextField1.requestFocus();
@@ -328,10 +366,12 @@ private void cargarTabla(){
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -341,6 +381,7 @@ private void cargarTabla(){
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 }
 

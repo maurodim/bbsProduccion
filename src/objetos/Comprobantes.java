@@ -240,7 +240,11 @@ public class Comprobantes implements Facturar{
         if(tipoComprobante==1){
             tx=tc;
         }else{
+            if(tipoComprobante ==13){
+             tx="seña";   
+            }else{
             tx=fc;
+            }
         }
         String sql="select * from tipocomprobantes where descripcion like '"+tx+"%' and numeroSucursal ="+Inicio.sucursal.getNumero();
         ResultSet rs=tra.leerConjuntoDeRegistros(sql);
@@ -277,7 +281,7 @@ public class Comprobantes implements Facturar{
         while(iComp.hasNext()){
             articulo=(Articulos)iComp.next();
             Double cantidad=articulo.getCantidad() * -1;
-            sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numeroUsuario,precioDeVenta,precioDeCosto) values ("+comp.getTipoMovimiento()+","+articulo.getNumeroId()+","+cantidad+","+Inicio.deposito.getNumero()+","+comp.getTipoComprobante()+","+comp.getNumero()+",'"+comp.getCliente().getCodigoCliente()+"','"+comp.getFechaEmision()+"',"+comp.getUsuarioGenerador()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getPrecioDeCosto()+")";
+            sql="insert into movimientosarticulos (tipoMovimiento,idArticulo,cantidad,numeroDeposito,tipoComprobante,numeroComprobante,numeroCliente,fechaComprobante,numeroUsuario,precioDeVenta,precioDeCosto) values ("+comp.getTipoMovimiento()+","+articulo.getNumeroId()+","+cantidad+","+Inicio.deposito.getNumero()+","+comp.getTipoComprobante()+","+comp.getNumero()+",'"+comp.getCliente().getCodigoId()+"','"+comp.getFechaEmision()+"',"+comp.getUsuarioGenerador()+","+articulo.getPrecioUnitarioNeto()+","+articulo.getPrecioDeCosto()+")";
             verif=tra.guardarRegistro(sql);
             
         }
@@ -386,6 +390,72 @@ public class Comprobantes implements Facturar{
     @Override
     public Object cargarPorCodigoAsignado(Integer id) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean guardarSena(Object oob) {
+        Comprobantes comprobante=(Comprobantes)oob;
+        Boolean verif=false;
+        Integer cliente=comprobante.getCliente().getCodigoId();
+        Double monto=comprobante.getMontoTotal();
+        numeroActual(comprobante.getTipoComprobante());
+        numeroComprobante++;
+        String sql="insert into movimientossena (codigoCliente,monto,codigoUsuario,numeroComprobante) values ("+cliente+","+monto+","+Inicio.usuario.getNumeroId()+","+numeroComprobante+")";
+        Transaccionable tra=new Conecciones();
+        verif=tra.guardarRegistro(sql);
+        if(verif){
+            sql="update tipocomprobantes set numeroActivo="+numeroComprobante+" where numero=13";
+        tra.guardarRegistro(sql);
+        }
+        return verif;
+    }
+
+    @Override
+    public Double leerSena(Object oob) {
+       Comprobantes comprobante=(Comprobantes)oob;
+        Integer codigoCliente=comprobante.getCliente().getCodigoId();
+        String sql="select * from movimientossena where codigoCliente ="+codigoCliente+" and aplicado=0";
+        Transaccionable tra=new Conecciones();
+        ResultSet rs=tra.leerConjuntoDeRegistros(sql);
+        Double total=0.00;
+        try {
+            while(rs.next()){
+                total+=rs.getDouble("monto");
+                
+            }
+            rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Comprobantes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return total;
+    }
+
+    @Override
+    public Boolean modificarSena(Object oob) {
+        Comprobantes comprobante=(Comprobantes)oob;
+        Boolean verif=false;
+        Integer cliente=comprobante.getCliente().getCodigoId();
+        Double monto=comprobante.getMontoTotal();
+        //numeroActual(comprobante.getTipoComprobante());
+        String sql="update movimientossena set monto="+monto+" where codigoCliente="+cliente;
+        Transaccionable tra=new Conecciones();
+        verif=tra.guardarRegistro(sql);
+        
+        return verif;
+    }
+
+    @Override
+    public Boolean aplicarSena(Object oob) {
+       Comprobantes comprobante=(Comprobantes)oob;
+        Boolean verif=false;
+        Integer cliente=comprobante.getCliente().getCodigoId();
+        //Double monto=comprobante.getMontoTotal();
+        //numeroActual(comprobante.getTipoComprobante());
+        String sql="update movimientossena set aplicado=1, fechaAplicada='"+Inicio.fechaDia+"' where codigoCliente="+cliente+" and aplicado=0";
+        Transaccionable tra=new Conecciones();
+        verif=tra.guardarRegistro(sql);
+        
+        return verif;
     }
     
 }

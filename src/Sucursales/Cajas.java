@@ -553,7 +553,7 @@ public class Cajas extends Sucursales implements Cajeables{
         try {
             while(rs.next()){
                 articulo=new Articulos();
-                cliente=new ClientesTango(String.valueOf(rs.getInt("numeroCliente")));
+                cliente=new ClientesTango(rs.getInt("numeroCliente"));
                 comprobante.setCliente(cliente);
                 comprobante.setFechaEmision(rs.getDate("fecha"));
                 reg++;

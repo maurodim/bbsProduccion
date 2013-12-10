@@ -596,6 +596,26 @@ public class Articulos implements Facturar,Editables,Articulable{
             }
         }
     }
+
+    @Override
+    public Boolean guardarSena(Object oob) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Double leerSena(Object oob) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean modificarSena(Object oob) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Boolean aplicarSena(Object oob) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
     
 }
