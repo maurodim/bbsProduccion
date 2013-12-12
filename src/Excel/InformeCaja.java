@@ -4,6 +4,7 @@
  */
 package Excel;
 
+import Conversores.Numeros;
 import interfaceGraficas.Inicio;
 import interfaces.Transaccionable;
 import java.io.FileNotFoundException;
@@ -29,8 +30,9 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 public class InformeCaja {
     public static void Generar() throws SQLException{
         HSSFWorkbook libro=new HSSFWorkbook();
-        HSSFSheet hoja=libro.createSheet();
-        HSSFSheet hoja1=libro.createSheet();
+        HSSFSheet hoja=libro.createSheet("VENTAS");
+        HSSFSheet hoja1=libro.createSheet("ARTICULOS");
+        HSSFSheet hoja2=libro.createSheet("SEÑAS");
         String ttx="celda numero :";
         HSSFRow fila=null;
         HSSFCell celda;
@@ -158,7 +160,7 @@ public class InformeCaja {
             */
             while(rs.next()){
                 a++;
-                fila=hoja1.createRow(a);
+                fila=hoja2.createRow(a);
                 celda=fila.createCell(1);
                 celda.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
                 celda.setCellValue(rs.getInt("numeroComprobante"));
@@ -175,6 +177,62 @@ public class InformeCaja {
                 celda5=fila.createCell(5);
                 celda.setCellType(HSSFCell.CELL_TYPE_STRING);
                 celda5.setCellValue(cant);
+            /*
+            celda6=fila.createCell(6);
+            celda6.setCellStyle(titulo);
+            celda6.setCellValue("Gastos");
+            celda7=fila.createCell(7);
+            celda7.setCellStyle(titulo);
+            celda7.setCellValue("Observaciones");
+            */
+            }
+            a=0;
+        fila=hoja2.createRow(a);
+           sql="select *,(select listcli.RAZON_SOCI from listcli where listcli.codMMd=movimientossena.codigoCliente)as nombreCliente,(select usuarios.nombre from usuarios where usuarios.numero=movimientossena.codigoUsuario)as nombreUsuario from movimientossena where aplicado=0";
+           rs=tra.leerConjuntoDeRegistros(sql);
+            celda=fila.createCell(1);
+            celda.setCellStyle(titulo);
+            celda.setCellValue("Numero Comprobante");
+            celda2=fila.createCell(2);
+            celda2.setCellStyle(titulo);
+            celda2.setCellValue("Cliente");
+            celda3=fila.createCell(3);
+            celda3.setCellStyle(titulo);
+            celda3.setCellValue("Monto");
+            celda4=fila.createCell(4);
+            celda4.setCellStyle(titulo);
+            celda4.setCellValue("Recibio");
+            
+            celda5=fila.createCell(5);
+            celda5.setCellStyle(titulo);
+            celda5.setCellValue("Fecha Recepción");
+            /*
+            celda6=fila.createCell(6);
+            celda6.setCellStyle(titulo);
+            celda6.setCellValue("Gastos");
+            celda7=fila.createCell(7);
+            celda7.setCellStyle(titulo);
+            celda7.setCellValue("Observaciones");
+            */
+            while(rs.next()){
+                a++;
+                fila=hoja1.createRow(a);
+                celda=fila.createCell(1);
+                celda.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+                celda.setCellValue(rs.getInt("numeroComprobante"));
+                celda2=fila.createCell(2);
+                celda.setCellType(HSSFCell.CELL_TYPE_STRING);
+                celda2.setCellValue(rs.getString("nombreCliente"));
+                celda3=fila.createCell(3);
+                celda.setCellType(HSSFCell.CELL_TYPE_STRING);
+                celda3.setCellValue(rs.getDouble("monto"));
+                celda4=fila.createCell(4);
+                celda.setCellType(HSSFCell.CELL_TYPE_STRING);
+                celda4.setCellValue(rs.getString("nombreUsuario"));
+                //Double cant=rs.getDouble("cantidad");
+                celda5=fila.createCell(5);
+                celda.setCellType(HSSFCell.CELL_TYPE_STRING);
+                celda5.setCellValue(Numeros.ConvertirFecha(rs.getDate("fecha")));
             /*
             celda6=fila.createCell(6);
             celda6.setCellStyle(titulo);
