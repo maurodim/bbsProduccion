@@ -160,7 +160,7 @@ public class InformeCaja {
             */
             while(rs.next()){
                 a++;
-                fila=hoja2.createRow(a);
+                fila=hoja1.createRow(a);
                 celda=fila.createCell(1);
                 celda.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
                 celda.setCellValue(rs.getInt("numeroComprobante"));
@@ -216,7 +216,7 @@ public class InformeCaja {
             */
             while(rs.next()){
                 a++;
-                fila=hoja1.createRow(a);
+                fila=hoja2.createRow(a);
                 celda=fila.createCell(1);
                 celda.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
                 celda.setCellValue(rs.getInt("numeroComprobante"));

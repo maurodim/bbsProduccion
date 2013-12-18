@@ -45,7 +45,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
     private ArrayList listadoPrecios;
     private Double montoPagoParcial=0.00;
     private Integer tipoPagoParcial=0;
-    private Integer comprobantess;
+    private Integer comprobantess=0;
     private Double montoSeña;
     
     public IngresoDePedidos() {

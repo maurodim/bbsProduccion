@@ -16,6 +16,7 @@ import facturacion.pantallas.IngresoDePedidos;
 import interfacesPrograma.Cajeables;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -381,6 +382,11 @@ public class Inicio extends javax.swing.JFrame {
         IngresoDePedidos ingPed=new IngresoDePedidos();
         jDesktopPane1.add(ingPed);
         ingPed.setVisible(true);
+        try {
+            ingPed.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
         ingPed.toFront();
         
     }//GEN-LAST:event_jMenuItem2ActionPerformed
