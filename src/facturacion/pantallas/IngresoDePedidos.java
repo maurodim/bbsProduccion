@@ -47,6 +47,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
     private Integer tipoPagoParcial=0;
     private Integer comprobantess=0;
     private Double montoSeña;
+    private static Integer tipoMovimiento=0;
     
     public IngresoDePedidos() {
         //Articulos.CargarMap();
@@ -63,6 +64,32 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         this.jTextField1.requestFocus();
         //this.jPanel2.requestFocus();
         
+    }
+    public IngresoDePedidos(Integer tipoMov) {
+        //Articulos.CargarMap();
+        cliT=new ClientesTango("999999");
+        //cliT=(ClientesTango)oob;
+        //comp.setCliente(cliT);
+        initComponents();
+        this.jLabel6.setText(cliT.getRazonSocial());
+        this.jLabel7.setVisible(false);
+        this.jTextField4.setVisible(false);
+        this.jButton6.setVisible(false);
+        //this.jCheckBox1.setVisible(false);
+        this.jCheckBox2.setEnabled(false);
+        this.jTextField1.requestFocus();
+        //this.jPanel2.requestFocus();
+        tipoMovimiento=tipoMov;
+        if(tipoMovimiento==14){
+            this.jLabel9.setVisible(false);
+            this.jComboBox1.setVisible(false);
+            this.jCheckBox2.setSelected(false);          
+            //this.jCheckBox2.setVisible(false);
+            this.jLabel5.setVisible(false);
+            this.jTextField3.setVisible(false);
+            this.jComboBox2.setVisible(false);
+            comprobantess=16;
+        }
     }
 
     /**
@@ -672,9 +699,17 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
             comprobanteTipo=14;
             montoTotal=montoTotal * -1;
         }
+        if(comprobantess==16){
+            comprobanteTipo=16;
+            
+        }
         Comprobantes comprobante=new Comprobantes();
         comprobante.setCliente(cliT);
+        if(tipoMovimiento==14){
+         comprobante.setTipoMovimiento(tipoMovimiento);   
+        }else{
         comprobante.setTipoMovimiento(1);
+        }
         comprobante.setTipoComprobante(comprobanteTipo);
         comprobante.setFechaEmision((Date.valueOf(fecha2)));
         comprobante.setListadoDeArticulos(detalleDelPedido);
@@ -695,7 +730,7 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         }
         ListasDePrecios ls=(ListasDePrecios)listadoPrecios.get(this.jComboBox1.getSelectedIndex());
         int numero=ls.getId();
-        comprobante.setPagado(numero);
+        comprobante.setPagado(0);
         Facturar fat=new Comprobantes();
         fat.guardar(comprobante);
         /*
@@ -724,6 +759,16 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         this.jTextField2.setText("");
         jTextField1.setText("");
         jTextField1.requestFocus();
+        if(tipoMovimiento==14){
+            this.jLabel9.setVisible(false);
+            this.jComboBox1.setVisible(false);
+            this.jCheckBox2.setSelected(false);
+            this.jCheckBox2.setVisible(false);
+            this.jLabel5.setVisible(false);
+            this.jTextField3.setVisible(false);
+            this.jComboBox2.setVisible(false);
+            comprobantess=16;
+        }
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -905,8 +950,8 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         this.jLabel10.setText(" ");
         this.jLabel11.setText(" ");
         this.jLabel12.setText(" ");
-        this.jCheckBox2.setSelected(true);
-        this.jCheckBox2.setEnabled(false);
+        //this.jCheckBox2.setSelected(true);
+        //this.jCheckBox2.setEnabled(false);
         this.jList1.removeAll();
         listadoDeBusqueda.clear();
         this.jComboBox1.setSelectedIndex(0);

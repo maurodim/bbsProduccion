@@ -132,6 +132,9 @@ public class Inicio extends javax.swing.JFrame {
         jMenu6 = new javax.swing.JMenu();
         jMenuItem20 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
+        jMenu8 = new javax.swing.JMenu();
+        jMenuItem22 = new javax.swing.JMenuItem();
+        jMenuItem23 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SISITEMA DE GESTION BAMBU SOFTWARE");
@@ -340,6 +343,21 @@ public class Inicio extends javax.swing.JFrame {
         jMenu7.setText("Gastos Fijos");
         jMenuBar1.add(jMenu7);
 
+        jMenu8.setText("Pedidos");
+
+        jMenuItem22.setText("Ingreso de Pedido");
+        jMenuItem22.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem22ActionPerformed(evt);
+            }
+        });
+        jMenu8.add(jMenuItem22);
+
+        jMenuItem23.setText("Listado de Pedidos");
+        jMenu8.add(jMenuItem23);
+
+        jMenuBar1.add(jMenu8);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -536,6 +554,13 @@ public class Inicio extends javax.swing.JFrame {
        gen.toFront();
     }//GEN-LAST:event_jMenuItem21ActionPerformed
 
+    private void jMenuItem22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem22ActionPerformed
+        IngresoDePedidos ing=new IngresoDePedidos(14);
+        jDesktopPane1.add(ing);
+        ing.setVisible(true);
+        ing.toFront();
+    }//GEN-LAST:event_jMenuItem22ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -600,6 +625,7 @@ public class Inicio extends javax.swing.JFrame {
     public static javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
@@ -615,6 +641,8 @@ public class Inicio extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem20;
     private javax.swing.JMenuItem jMenuItem21;
+    private javax.swing.JMenuItem jMenuItem22;
+    private javax.swing.JMenuItem jMenuItem23;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
