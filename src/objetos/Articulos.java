@@ -411,6 +411,41 @@ public class Articulos implements Facturar,Editables,Articulable{
         }
 
     }
+    public ArrayList listadoPorBarra(String criterio){
+               ArrayList resultado=new ArrayList();
+        Articulos articulo=null;
+        Transaccionable tra=new Conecciones();
+        criterio=criterio.toUpperCase();
+        String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo,(select colores.descripcion from colores where colores.numero=articulos.codigoColor) as descripcionColor from articulos where INHABILITADO=0 and BARRAS like '"+criterio+"%'";
+        ResultSet rr=tra.leerConjuntoDeRegistros(sql);
+        try {
+            while(rr.next()){
+                articulo=new Articulos();
+                articulo.setCodigoAsignado(rr.getString("BARRAS"));
+                articulo.setCodigoColor(rr.getInt("codigoColor"));
+                articulo.setColor(rr.getString("descripcionColor"));
+                articulo.setTalle(rr.getInt("talle"));
+                articulo.setDescripcionArticulo(rr.getString("NOMBRE"));
+                articulo.setNumeroId(rr.getInt("ID"));
+                articulo.setCodigoDeBarra(rr.getString("BARRAS"));
+                articulo.setRecargo(rr.getDouble("recargo"));
+                articulo.setPrecioUnitarioNeto(rr.getDouble("PRECIO"));
+                articulo.setEquivalencia(rr.getDouble("equivalencia"));
+                articulo.setPrecioDeCosto(rr.getDouble("COSTO"));
+                articulo.setStockMinimo(rr.getDouble("MINIMO"));
+                articulo.setStockActual(rr.getDouble("stock"));
+                articulo.setPrecioServicio(rr.getDouble("SERVICIO"));
+                articulo.setModificaPrecio(rr.getBoolean("modificaPrecio"));
+                //desc=articulo.getDescripcionArticulo().toUpperCase()+" Talle:"+articulo.getTalle()+" Color:"+articulo.getColor();
+                resultado.add(articulo);
+                
+            }
+            rr.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Articulos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultado;
+    }
     @Override
     public Boolean guardar(Object oob) {
         throw new UnsupportedOperationException("Not supported yet.");

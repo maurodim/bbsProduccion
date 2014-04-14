@@ -5,11 +5,14 @@
 package interfaceGraficas;
 
 import Compras.FacturaProveedor;
+import Compras.Proveedores;
 import Conversores.Numeros;
 import Sucursales.Cajas;
 import interfaces.Adeudable;
+import interfaces.Personalizable;
 import interfacesPrograma.Cajeables;
 import interfacesPrograma.Facturar;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.DefaultListModel;
@@ -413,6 +416,30 @@ public class CajaAbm extends javax.swing.JInternalFrame {
        Double monto=0.00;
         switch(operacionSelect){
            case 11:
+               
+               FacturaProveedor fact=new FacturaProveedor();
+               Adeudable ade=new FacturaProveedor();
+               Proveedores prov=new Proveedores();
+               //Personalizable ade=new Proveedores();
+               prov=(Proveedores)listadoP.get(this.jComboBox2.getSelectedIndex());
+               fact.setNombreProveedor(prov.getNombre());
+            fact.setNumeroProveedor(prov.getNumero());
+            fact.setFecha(Date.valueOf(Inicio.fechaDia));
+            //fact.setIdRemito(idRemito);
+            fact.setIdCaja(Inicio.caja.getNumero());
+            fact.setIdUsuario(Inicio.usuario.getNumero());
+            fact.setIdSucursal(Inicio.sucursal.getNumero());
+            String mmt=this.jTextField1.getText();
+            Double montot=Double.parseDouble(this.jTextField1.getText());
+            //montot=montot * -1;
+            fact.setMontoFinal(montot);
+               ade.PagarComprobante(fact);
+               listadoP.clear();
+               operacionSelect=0;
+               this.jPanel2.setVisible(false);
+               //AgregarRenglonTabla();
+               
+               /*
                FacturaProveedor fact=new FacturaProveedor();
                Adeudable ade=new FacturaProveedor();
                fact=(FacturaProveedor)listadoP.get(this.jComboBox2.getSelectedIndex());
@@ -421,6 +448,7 @@ public class CajaAbm extends javax.swing.JInternalFrame {
                operacionSelect=0;
                this.jPanel2.setVisible(false);
                 AgregarRenglonTabla();
+                */
                 //ModificarLabels();
            case 13:
                
@@ -452,6 +480,7 @@ public class CajaAbm extends javax.swing.JInternalFrame {
                break;
        }
         AgregarRenglonTabla();
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -465,6 +494,8 @@ public class CajaAbm extends javax.swing.JInternalFrame {
     this.jLabel8.setText("T. EFECT EN CAJA "+totalEfect);
     }
     private void ListarProveedores(){
+        
+        /*
         FacturaProveedor fact=new FacturaProveedor();
         listadoP=new ArrayList();
         Adeudable ade=new FacturaProveedor();
@@ -479,6 +510,25 @@ public class CajaAbm extends javax.swing.JInternalFrame {
         this.jButton2.setText("PAGAR");
         this.jLabel4.setVisible(false);
         this.jTextField2.setVisible(false);
+        */
+         
+        Proveedores fact=new Proveedores();
+        listadoP=new ArrayList();
+        //Adeudable ade=new FacturaProveedor();
+        Personalizable ade=new Proveedores();
+        listadoP=ade.listar();
+        Iterator ilP=listadoP.listIterator();
+        while(ilP.hasNext()){
+            fact=(Proveedores)ilP.next();
+            this.jComboBox2.addItem(fact.getNombre());
+        }
+        this.jLabel2.setText("Seleccione Proveedor");
+        this.jLabel3.setText("Monto Adeudado");
+        this.jButton2.setText("PAGAR");
+        this.jLabel4.setVisible(false);
+        this.jTextField2.setVisible(false);
+        
+        
     }
     private void ListarClientes(){
         
