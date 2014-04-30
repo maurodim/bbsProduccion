@@ -446,6 +446,12 @@ public class Articulos implements Facturar,Editables,Articulable{
         }
         return resultado;
     }
+    public static void nuevoColor(String desc){
+        String sql="insert into colores (descripcion) values ('"+desc+"')";
+        Transaccionable tra=new Conecciones();
+        tra.guardarRegistro(sql);
+        colores.add(desc);
+    }
     @Override
     public Boolean guardar(Object oob) {
         throw new UnsupportedOperationException("Not supported yet.");

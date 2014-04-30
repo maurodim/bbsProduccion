@@ -80,15 +80,27 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Descripcion");
 
+        jTextField1.setText(" ");
+
         jLabel2.setText("Stock Actual");
+
+        jTextField2.setText("0");
 
         jLabel3.setText("Stock Mínimo :");
 
+        jTextField3.setText("0");
+
         jLabel4.setText("Precio de Costo:");
+
+        jTextField4.setText("0");
 
         jLabel5.setText("Precio de Venta :");
 
+        jTextField5.setText("0");
+
         jLabel6.setText("Talle :");
+
+        jTextField6.setText("35");
 
         jButton1.setText("Guardar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -173,7 +185,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
                     .addComponent(jLabel8))
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
