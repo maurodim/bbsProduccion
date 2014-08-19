@@ -622,7 +622,7 @@ public class Articulos implements Facturar,Editables,Articulable{
         String sql="";
         Transaccionable tra=new Conecciones();
         for(int i=0;i < tama;i++){
-            int talless=(int) talles.get(i);
+            int talless=Integer.parseInt( (String) talles.get(i));
             int b=colores.size();
             int c=0;
             for(int bb=0;bb < b;bb++){
