@@ -269,7 +269,7 @@ public class Articulos implements Facturar,Editables,Articulable{
         Transaccionable tra=new Conecciones();
         //ArrayList resultado=new ArrayList();
         Articulos articulo=null;
-        String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo,(select colores.descripcion from colores where colores.numero=articulos.codigoColor) as descripcionColor from articulos where INHABILITADO=0 order by ID desc";
+        String sql="select *,(select stockart.stock from stockart where stockart.id=articulos.ID)as stock,(select rubros.recargo from rubros where rubros.id=articulos.idRubro)as recargo,(select colores.descripcion from colores where colores.numero=articulos.codigoColor) as descripcionColor from articulos where INHABILITADO=0 order by ID";
         ResultSet rr=tra.leerConjuntoDeRegistros(sql);
         Integer num=0;
         try {
@@ -622,7 +622,7 @@ public class Articulos implements Facturar,Editables,Articulable{
         String sql="";
         Transaccionable tra=new Conecciones();
         for(int i=0;i < tama;i++){
-            int talless=Integer.parseInt( (String) talles.get(i));
+            int talless=Integer.parseInt(String.valueOf(talles.get(i)));
             int b=colores.size();
             int c=0;
             for(int bb=0;bb < b;bb++){
