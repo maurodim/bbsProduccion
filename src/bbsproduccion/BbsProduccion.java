@@ -59,10 +59,11 @@ public class BbsProduccion {
          while((linea=br.readLine())!=null)
             System.out.println(linea);
            
-            if(tra.guardarRegistro(linea));
+            //if(tra.guardarRegistro(linea));
       }
       catch(Exception e){
          e.printStackTrace();
+         
       }finally{
          // En el finally cerramos el fichero, para asegurarnos
          // que se cierra tanto si todo va bien como si salta 

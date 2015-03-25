@@ -275,7 +275,7 @@ public class GeneradorDeArticulos extends javax.swing.JInternalFrame {
        
         Integer pos=this.jList4.getSelectedIndex();
         String talM=(String) Articulos.getColores().get(pos);
-        
+        pos++;
         coloresMas.add(pos);
         coloresMasD.add(talM);
         AgregarListaColores();

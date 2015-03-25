@@ -580,10 +580,10 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         arti=(Articulos)listadoDeBusqueda.get(posicion);
         System.err.println("ARTICULO SELECCIONADO :"+arti.getDescripcionArticulo()+" "+arti.getCodigoDeBarra());
         String codBar=arti.getCodigoDeBarra();
-        Double precio=arti.getPrecioUnitarioNeto();
+        Double precio=arti.getPrecioUnitarioNeto() * 0.9;
         Double cuotas=0.00;
-        Double total=precio * 1.1;
-        cuotas=precio / 3;
+        Double total=arti.getPrecioUnitarioNeto();
+        cuotas=total / 3;
         String informacion=" Precio Contado o Débito:"+Numeros.ConvertirNumero(precio)+"\n\r Tarjeta de Crédito:"+Numeros.ConvertirNumero(total)+" \n\r 3 Pagos de "+Numeros.ConvertirNumero(cuotas)+"";
         this.jTextArea1.setText(informacion);
         jTextField1.setText(codBar.trim());

@@ -739,7 +739,7 @@ private void cargarLista(){
     while(il.hasNext()){
         art=(Articulos)il.next();
         System.out.println("DESCRIPCION "+art.getDescripcionArticulo());
-        modelo.addElement(art.getCodigoAsignado()+" "+art.getDescripcionArticulo());
+        modelo.addElement(art.getCodigoAsignado()+" "+art.getDescripcionArticulo()+" "+art.getTalle()+" "+art.getColor());
     }
     ListadoDeArticulos listadoDeArticulos=new ListadoDeArticulos();
     listadoDeArticulos.jList1.setModel(modelo);
