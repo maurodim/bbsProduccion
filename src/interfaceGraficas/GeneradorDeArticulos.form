@@ -277,7 +277,7 @@
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jList4MouseClicked"/>
               </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="DefaultListModel modelos=new DefaultListModel();&#xa;ArrayList listadoTalless=Articulos.getColores();&#xa;Iterator iltt=listadoTalless.listIterator();&#xa;while(iltt.hasNext()){&#xa;    String num=(String)iltt.next();&#xa;    modelos.addElement(num);&#xa;}&#xa;this.jList4.setModel(modelos);"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="DefaultListModel modelos=new DefaultListModel();&#xa;&#xa;Personalizable perz=new Color();&#xa;ArrayList listadoTalless=perz.listar();&#xa;Iterator iltt=listadoTalless.listIterator();&#xa;Color num;&#xa;String tex=&quot;&quot;;&#xa;while(iltt.hasNext()){&#xa;    num=(Color)iltt.next();&#xa;    tex=num.getDescripcion();&#xa;    modelos.addElement(tex);&#xa;}&#xa;this.jList4.setModel(modelos);"/>
               </AuxValues>
             </Component>
           </SubComponents>

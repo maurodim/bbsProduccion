@@ -13,6 +13,7 @@ import java.util.Iterator;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import objetos.Articulos;
+import objetos.Color;
 
 /**
  *
@@ -117,11 +118,16 @@ public class GeneradorDeArticulos extends javax.swing.JInternalFrame {
         jScrollPane3.setViewportView(jList3);
 
         DefaultListModel modelos=new DefaultListModel();
-        ArrayList listadoTalless=Articulos.getColores();
+
+        Personalizable perz=new Color();
+        ArrayList listadoTalless=perz.listar();
         Iterator iltt=listadoTalless.listIterator();
+        Color num;
+        String tex="";
         while(iltt.hasNext()){
-            String num=(String)iltt.next();
-            modelos.addElement(num);
+            num=(Color)iltt.next();
+            tex=num.getDescripcion();
+            modelos.addElement(tex);
         }
         this.jList4.setModel(modelos);
         jList4.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -274,9 +280,9 @@ public class GeneradorDeArticulos extends javax.swing.JInternalFrame {
     private void jList4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList4MouseClicked
        
         Integer pos=this.jList4.getSelectedIndex();
-        String talM=(String) Articulos.getColores().get(pos);
-        pos++;
-        coloresMas.add(pos);
+        Color talM=(Color) Articulos.getColores().get(pos);
+        //pos++;
+        coloresMas.add(talM);
         coloresMasD.add(talM);
         AgregarListaColores();
     }//GEN-LAST:event_jList4MouseClicked
@@ -332,8 +338,8 @@ public class GeneradorDeArticulos extends javax.swing.JInternalFrame {
         DefaultListModel coll=new DefaultListModel();
        Iterator itC=coloresMasD.listIterator();
        while(itC.hasNext()){
-           String tallM=(String)itC.next();
-           coll.addElement(tallM);
+           Color tallM=(Color)itC.next();
+           coll.addElement(tallM.getDescripcion());
        }
        this.jList2.setModel(coll);
     }

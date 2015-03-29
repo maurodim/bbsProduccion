@@ -298,7 +298,10 @@ public class Articulos implements Facturar,Editables,Articulable{
             sql="select * from colores";
             rr=tra.leerConjuntoDeRegistros(sql);
             while(rr.next()){
-                colores.add(rr.getString("descripcion"));
+                Color color=new Color();
+                color.setId(rr.getInt("numero"));
+                color.setDescripcion(rr.getString("descripcion"));
+                colores.add(color);
             }
             rr.close();
                   } catch (SQLException ex) {
@@ -620,18 +623,19 @@ public class Articulos implements Facturar,Editables,Articulable{
         Articulos articulo=(Articulos)objeto;
         int tama=talles.size();
         String sql="";
+        Color col=new Color();
         Transaccionable tra=new Conecciones();
         for(int i=0;i < tama;i++){
             int talless=Integer.parseInt(String.valueOf(talles.get(i)));
             int b=colores.size();
             int c=0;
             for(int bb=0;bb < b;bb++){
-                Integer col=(Integer) colores.get(bb);
-                col++;
+                col=(Color) colores.get(bb);
+                //col++;
                 //col=col.substring(0, 1);
-                String codigo=articulo.getCodigoAsignado()+talles.get(i)+col;
+                String codigo=articulo.getCodigoAsignado()+talles.get(i)+col.getId();
                 //int codigoCol=bb+1;
-                sql="insert into articulos (BARRAS,NOMBRE,PRECIO,PROVEEDOR,RUBRON,talle,codigoColor) values ('"+codigo+"','"+articulo.getDescripcionArticulo()+"',"+articulo.getPrecioUnitarioNeto()+",'"+articulo.getRubro()+"',"+articulo.getRubro()+","+talless+","+col+")";
+                sql="insert into articulos (BARRAS,NOMBRE,PRECIO,PROVEEDOR,RUBRON,talle,codigoColor) values ('"+codigo+"','"+articulo.getDescripcionArticulo()+"',"+articulo.getPrecioUnitarioNeto()+",'"+articulo.getRubro()+"',"+articulo.getRubro()+","+talless+","+col.getId()+")";
                 tra.guardarRegistro(sql);
                 //System.out.println(sql);
             }
