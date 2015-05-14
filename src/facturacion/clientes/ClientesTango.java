@@ -102,7 +102,7 @@ public class ClientesTango implements Busquedas,Facturar{
               
             
             Transaccionable tra=new Conecciones();
-            String sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto) from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMMd)as saldo,(select sum(movimientossena.monto) from movimientossena where movimientossena.codigoCliente=listcli.codMMd and movimientossena.aplicado=0)as seña from listcli";
+            String sql="select *,(select coeficienteslistas.coeficiente from coeficienteslistas where coeficienteslistas.id=listcli.NRO_LISTA)as coeficiente,(select sum(movimientosclientes.monto) from movimientosclientes where pagado=0 and movimientosclientes.numeroProveedor=listcli.codMmd)as saldo,(select sum(movimientossena.monto) from movimientossena where movimientossena.codigoCliente=listcli.codMmd and movimientossena.aplicado=0)as seña from listcli";
             System.out.println("CLIENTES "+sql);
             //String sql="select pedidos_carga1.COD_CLIENT,pedidos_carga1.RAZON_SOC,pedidos_carga1.NRO_PEDIDO,pedidos_carga1.numero,pedidos_carga1.LEYENDA_2 from pedidos_carga1 where RAZON_SOC like '"+cliente+"%' group by COD_CLIENT order by RAZON_SOC";
             ResultSet rs=tra.leerConjuntoDeRegistros(sql);
@@ -113,7 +113,7 @@ public class ClientesTango implements Busquedas,Facturar{
                 String nombre="";
             while(rs.next()){               
                 ClientesTango cli=new ClientesTango();
-                cli.setCodigoId(rs.getInt("codMMd"));
+                cli.setCodigoId(rs.getInt("codMmd"));
                 cli.setCodigoCliente(rs.getString("COD_CLIENT"));
                 cli.setRazonSocial(rs.getString("RAZON_SOCI"));
                 cli.setDireccion(rs.getString("DOMICILIO"));
@@ -521,7 +521,7 @@ public class ClientesTango implements Busquedas,Facturar{
         Transaccionable tra=new Conecciones();
         
         //String sql="insert into listcli (COD_CLIENT,RAZON_SOCI,DOMICILIO,LOCALIDAD,TELEFONO_1,TIPO_IVA,IDENTIFTRI,COND_VTA,NRO_LISTA,empresa) values ('"+cli.getCodigoCliente()+"','"+cli.getRazonSocial()+"','"+cli.getDireccion()+"','SANTA FE','"+cli.getTelefono()+"',"+cli.getCondicionIva()+",'"+cli.getNumeroDeCuit()+"',1,1,'"+cli.getEmpresa()+"')";
-        String sql="update listcli set RAZON_SOCI='"+cli.getRazonSocial()+"',DOMICILIO='"+cli.getDireccion()+"',TELEFONO_1='"+cli.getTelefono()+"',COND_VTA="+cli.getCondicionDeVenta()+",NRO_LISTA="+cli.getListaDePrecios()+",CUPO_CREDI="+cli.getCupoDeCredito()+" where codMMd ="+cli.getCodigoId();
+        String sql="update listcli set RAZON_SOCI='"+cli.getRazonSocial()+"',DOMICILIO='"+cli.getDireccion()+"',TELEFONO_1='"+cli.getTelefono()+"',COND_VTA="+cli.getCondicionDeVenta()+",NRO_LISTA="+cli.getListaDePrecios()+",CUPO_CREDI="+cli.getCupoDeCredito()+" where id ="+cli.getCodigoId();
         resultado=tra.guardarRegistro(sql);
         if(resultado)cargarMap();
         return resultado;

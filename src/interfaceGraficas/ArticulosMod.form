@@ -209,7 +209,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="Iterator itCol=Articulos.getColores().listIterator();&#xa;String descripcionColor=&quot;&quot;;&#xa;while(itCol.hasNext()){&#xa;    descripcionColor=(String)itCol.next();&#xa;    jComboBox1.addItem(descripcionColor);&#xa;}"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="Iterator itCol=Articulos.getColores().listIterator();&#xa;Color colores=new Color();&#xa;&#xa;while(itCol.hasNext()){&#xa;    colores=(Color)itCol.next();&#xa;    jComboBox1.addItem(colores.getDescripcion());&#xa;}"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">

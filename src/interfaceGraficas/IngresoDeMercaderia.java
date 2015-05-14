@@ -507,6 +507,18 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        
+        for(int pos=0;pos < this.jTable1.getRowCount();pos++){
+       String cantt=String.valueOf(this.jTable1.getValueAt(pos,2));
+       Double cantidad=Double.parseDouble(cantt);
+       String montoMod=(String) this.jTable1.getValueAt(pos,4);
+       System.out.println(" monto corregidoooooooooo "+cantidad);
+       arti=(Articulos)listadoArt.get(pos);
+       arti.setPrecioUnitario(Numeros.ConvertirStringADouble(montoMod));
+       arti.setCantidad(cantidad);
+       }
+        
+        
+        
         DecimalFormat fr=new DecimalFormat("00");
         Calendar c1=Calendar.getInstance();
 	Calendar c2=new GregorianCalendar();
@@ -651,14 +663,8 @@ public class IngresoDeMercaderia extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTable1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTable1FocusLost
-       int pos=this.jTable1.getSelectedRow();
-       String cantt=(String)this.jTable1.getValueAt(pos,2);
-       Double cantidad=Double.parseDouble(cantt);
-       String montoMod=(String) this.jTable1.getValueAt(pos,4);
-       System.out.println(" monto corregidoooooooooo "+cantidad);
-       arti=(Articulos)listadoArt.get(pos);
-       arti.setPrecioUnitario(Numeros.ConvertirStringADouble(montoMod));
-       arti.setCantidad(cantidad);
+       //int pos=this.jTable1.getSelectedRow();
+       
     }//GEN-LAST:event_jTable1FocusLost
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

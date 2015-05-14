@@ -9,6 +9,7 @@ import interfaces.Editables;
 import java.util.Iterator;
 import javax.swing.JTextField;
 import objetos.Articulos;
+import objetos.Color;
 
 /**
  *
@@ -28,7 +29,8 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         this.jTextField5.setText(String.valueOf(arti.getPrecioUnitarioNeto()));
         this.jTextField7.setText(String.valueOf(arti.getCodigoDeBarra()));
         this.jTextField6.setText(String.valueOf(arti.getTalle()));
-        this.jComboBox1.setVisible(false);
+        this.jComboBox1.setSelectedIndex(arti.getCodigoColor());
+        //this.jComboBox1.setVisible(false);
         this.jTextField7.selectAll();
         this.jTextField7.requestFocus();
         accion=2;
@@ -112,10 +114,11 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         jLabel7.setText("Codigo de Barra");
 
         Iterator itCol=Articulos.getColores().listIterator();
-        String descripcionColor="";
+        Color colores=new Color();
+
         while(itCol.hasNext()){
-            descripcionColor=(String)itCol.next();
-            jComboBox1.addItem(descripcionColor);
+            colores=(Color)itCol.next();
+            jComboBox1.addItem(colores.getDescripcion());
         }
 
         jLabel8.setText("Color");
