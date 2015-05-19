@@ -188,7 +188,7 @@ public class InformeCaja {
             }
             a=0;
         fila=hoja2.createRow(a);
-           sql="select *,(select listcli.RAZON_SOCI from listcli where listcli.id=movimientossena.codigoCliente)as nombreCliente,(select usuarios.nombre from usuarios where usuarios.numero=movimientossena.codigoUsuario)as nombreUsuario from movimientossena where aplicado=0";
+           sql="select *,(select listcli.RAZON_SOCI from listcli where listcli.codMmd=movimientossena.codigoCliente)as nombreCliente,(select usuarios.nombre from usuarios where usuarios.numero=movimientossena.codigoUsuario)as nombreUsuario from movimientossena where aplicado=0";
            rs=tra.leerConjuntoDeRegistros(sql);
             celda=fila.createCell(1);
             celda.setCellStyle(titulo);
