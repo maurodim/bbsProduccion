@@ -29,7 +29,7 @@ public class ArticulosMod extends javax.swing.JInternalFrame {
         this.jTextField5.setText(String.valueOf(arti.getPrecioUnitarioNeto()));
         this.jTextField7.setText(String.valueOf(arti.getCodigoDeBarra()));
         this.jTextField6.setText(String.valueOf(arti.getTalle()));
-        this.jComboBox1.setSelectedIndex(arti.getCodigoColor());
+        //this.jComboBox1.setSelectedIndex(arti.getCodigoColor());
         //this.jComboBox1.setVisible(false);
         this.jTextField7.selectAll();
         this.jTextField7.requestFocus();

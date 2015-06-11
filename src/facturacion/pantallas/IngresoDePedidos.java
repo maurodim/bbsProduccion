@@ -580,9 +580,9 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
         arti=(Articulos)listadoDeBusqueda.get(posicion);
         System.err.println("ARTICULO SELECCIONADO :"+arti.getDescripcionArticulo()+" "+arti.getCodigoDeBarra());
         String codBar=arti.getCodigoDeBarra();
-        Double precio=arti.getPrecioUnitarioNeto() * 0.9;
+        Double precio=arti.getPrecioUnitarioNeto();
         Double cuotas=0.00;
-        Double total=arti.getPrecioUnitarioNeto();
+        Double total=arti.getPrecioUnitarioNeto() * 1.1;
         cuotas=total / 3;
         String informacion=" Precio Contado o Débito:"+Numeros.ConvertirNumero(precio)+"\n\r Tarjeta de Crédito:"+Numeros.ConvertirNumero(total)+" \n\r 3 Pagos de "+Numeros.ConvertirNumero(cuotas)+"";
         this.jTextArea1.setText(informacion);
@@ -814,7 +814,42 @@ public class IngresoDePedidos extends javax.swing.JInternalFrame {
 
     private void jTextField4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            System.out.println("ENTER");
+            if(arti.getModificaPrecio()){
+                Double cantt=0.00;
+                Double precioUni=Double.parseDouble(this.jTextField4.getText());
+                cantt=Double.parseDouble(this.jTextField2.getText());
+                                   Articulos articul=new Articulos();
+                    articul.setCantidad(cantt);
+                    articul.setCodigoAsignado(arti.getCodigoAsignado());
+                    articul.setCodigoColor(arti.getCodigoColor());
+                    articul.setCodigoDeBarra(arti.getCodigoDeBarra());
+                    articul.setDescripcionArticulo(arti.getDescripcionArticulo());
+                    articul.setNumeroId(arti.getNumeroId());
+                    articul.setPrecioDeCosto(arti.getPrecioDeCosto());
+                    
+                    if(comprobantess==14){
+                      precioUni=precioUni* -1;  
+                    }else{
+                        //precioUni=arti.getPrecioUnitarioNeto();
+                    }
+                    articul.setPrecioUnitario(precioUni);
+                    articul.setPrecioUnitarioNeto(precioUni);
+            detalleDelPedido.add(articul);
+            agregarRenglonTabla();
+//                Double montoTotalX=(arti.getPrecioUnitario() * arti.getCantidad());
+//                montoTotal=montoTotal + montoTotalX;
+                 montrarMonto();
+                 System.err.println("MONTO TOTAL "+montoTotal);
+                 this.jLabel8.setText("");
+                 this.jList1.removeAll();
+                this.jButton1.setVisible(true);
+            this.jTextField1.setText("");
+            this.jTextField2.setText("");
+            this.jTextField1.requestFocus();
+            }else{
             this.jButton6.requestFocus();
+            }
         }
     }//GEN-LAST:event_jTextField4KeyPressed
 
