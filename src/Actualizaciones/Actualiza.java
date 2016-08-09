@@ -19,7 +19,7 @@ import objetos.Articulos;
 public class Actualiza extends Thread{
     @Override
     public void run(){
-        Timer timer=new Timer(150000,new ActionListener(){ 
+        Timer timer=new Timer(1000,new ActionListener(){ 
             @Override
     public void actionPerformed(ActionEvent e) 
     { 

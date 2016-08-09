@@ -40,7 +40,7 @@ public class Conecciones implements Transaccionable{
                     dataSource.setUser("maurodim_prod");//maurodim_prod
                     dataSource.setDatabaseName("maurodim_produccion");//maurodim_produccion
                     dataSource.setPassword("SUtter001");//SUtter001
-                    dataSource.setServerName("201.235.253.65");//201.235.253.65
+                    dataSource.setServerName("167.250.5.18");//201.235.253.65
                     con=dataSource.getConnection();
                     st=con.createStatement();
                  }catch(Exception ex){
